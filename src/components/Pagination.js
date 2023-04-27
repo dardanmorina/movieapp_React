@@ -3,15 +3,13 @@ import React from 'react'
 const Pagination = ({page, setPage}) => {
 
     const Previous = () => {
-      if (page !== 1) {
+      if (page > 1) {
         setPage(page - 1);
-      } else {
-        setPage(page);
-      }
+      } 
     };
   
     const Next = () => {
-      if (page < 10) {
+      if (page == page) {
         setPage(page + 1);
       }
     };
