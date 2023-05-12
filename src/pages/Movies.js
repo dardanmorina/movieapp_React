@@ -1,4 +1,5 @@
 import React, { useEffect, useState} from 'react'
+import axios from 'axios';
 import MoviesCard from '../components/MoviesCard'
 import Pagination from '../components/Pagination';
 
@@ -9,23 +10,15 @@ function Movies() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/discover/movie?api_key=37c10f2658655b7b6ec366bb9cd6a3c0&language=en-US&sort_by=popularity.desc&page=${page}`)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-            setMovies(data.results);
-    });
+    axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=37c10f2658655b7b6ec366bb9cd6a3c0&language=en-US&sort_by=popularity.desc&page=${page}`)
+        .then((response) =>  setMovies(response.data.results))
   },[page]);
 
   
   const handleOnSubmit = (e) => {
     e.preventDefault();
-
-    fetch(`https://api.themoviedb.org/3/search/movie?api_key=37c10f2658655b7b6ec366bb9cd6a3c0&query=` + searchTerm)
-          .then((res) => res.json())
-          .then((data) => {
-              setMovies(data.results);
-          });
+    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=37c10f2658655b7b6ec366bb9cd6a3c0&query=${searchTerm}`)
+        .then((response) =>  setMovies(response.data.results))
   }
   const handleOnChange = (e) => {
     setSearchTerm(e.target.value);
@@ -44,8 +37,13 @@ function Movies() {
             />
           </form>
           {movies && movies.map(movie => 
-            <MoviesCard key={movie.id} {...movie}/>
-          )}
+            <MoviesCard 
+              key={movie.id} 
+              title={movie.title}
+              vote_average={movie.vote_average}
+              release_date={movie.release_date}
+              poster_path={movie.poster_path}
+            />)}
       </div> 
       <Pagination page={page} setPage={setPage} />
     </>

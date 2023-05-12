@@ -9,15 +9,14 @@ const Pagination = ({page, setPage}) => {
     };
   
     const Next = () => {
-      if (page == page) {
-        setPage(page + 1);
-      }
+        setPage (page => page += 1)
     };
 
     return(
         <>
             <div className="pagination">
                 <button onClick={Previous}>{"< Prev"}</button>
+                <p>{page}</p>
                 <button onClick={Next}>{"Next >"}</button>
           </div>
         </>
